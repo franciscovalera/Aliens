@@ -1,5 +1,5 @@
 import sys
-import pygame
+import pygame as py
 from Ajustes import Ajustes
 from Nave import Nave
 
@@ -15,13 +15,14 @@ Por hacer:
 class AtaqueAlien:
     """Clase general para la gestión de los recursos y comportamiento del juego"""
     def __init__(self):
-        pygame.init()
+        py.init()
         self.ajustes = Ajustes()
 
-        self.screen = pygame.display.set_mode(
-            (self.ajustes.ancho_pantalla, self.ajustes.altura_pantalla))
+        self.screen = py.display.set_mode((0,0), py.FULLSCREEN)
+        self.ajustes.ancho_pantalla = self.screen.get_rect().width
+        self.ajustes.altura_pantalla = self.screen.get_rect().height
         
-        pygame.display.set_caption("Ataque Alien")
+        py.display.set_caption("Ataque Alien")
         self.color_fondo = (self.ajustes.color_fondo)
         self.nave = Nave(self)
         
@@ -34,28 +35,42 @@ class AtaqueAlien:
 
     def _eventos(self):
         """Método privado para la gestión de eventos como los imputs de teclado y raton"""
-        for evento in pygame.event.get():
-            if evento.type == pygame.QUIT:
-                sys.exit()
 
-            elif evento.type == pygame.KEYDOWN:
-                if evento.key == pygame.K_RIGHT:
-                    self.nave.movimiento_derecha = True
-                if evento.key == pygame.K_LEFT:
-                    self.nave.movimiento_izquierda = True
-            
-            elif evento.type == pygame.KEYUP:
-                if evento.key == pygame.K_RIGHT:
-                    self.nave.movimiento_derecha = False
-                if evento.key == pygame.K_LEFT:
-                    self.nave.movimiento_izquierda = False
+        for evento in py.event.get():
+            if evento.type == py.QUIT:
+                sys.exit()
+            elif evento.type == py.KEYDOWN:
+                self._pres_tecla(evento)
+
+            elif evento.type == py.KEYUP:
+                self._sol_tecla(evento)
+
+
+
+
+    def _pres_tecla(self, evento):      
+        if evento.key == py.K_LEFT:
+            self.nave.movimiento_izquierda = True
+        
+        elif evento.key == py.K_RIGHT:
+            self.nave.movimiento_derecha = True
+
+        elif evento.key == py.K_q:
+            sys.exit()
+
+    def _sol_tecla(self, event):
+        if event.key == py.K_LEFT:
+            self.nave.movimiento_izquierda = False
+        elif event.key == py.K_RIGHT:
+            self.nave.movimiento_derecha = False
+        
 
 
     def _actualizar_imagen(self):
         """Método para actualizar la imagen en pantalla"""
         self.screen.fill(self.color_fondo) #Crea la imagen de la pantalla
         self.nave.blitme() #Dibujar la nave en pantalla
-        pygame.display.flip()
+        py.display.flip()
 
 
 
