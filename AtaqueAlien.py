@@ -5,9 +5,11 @@ from Nave import Nave
 
 '''
 Por hacer:
-- Crear la nave
 - Dar movimiento a la nave
-- Iniciarla desde este archivo
+- crear la clase Alien
+- Dar movimiento al alien
+- crear una flota
+- iniciar la flota
 '''
 
 class AtaqueAlien:
@@ -27,6 +29,7 @@ class AtaqueAlien:
         """Bucle principal del juego"""
         while True:
             self._eventos()
+            self.nave.actualizar_nave()
             self._actualizar_imagen()
 
     def _eventos(self):
@@ -34,6 +37,20 @@ class AtaqueAlien:
         for evento in pygame.event.get():
             if evento.type == pygame.QUIT:
                 sys.exit()
+
+            elif evento.type == pygame.KEYDOWN:
+                if evento.key == pygame.K_RIGHT:
+                    self.nave.movimiento_derecha = True
+                if evento.key == pygame.K_LEFT:
+                    self.nave.movimiento_izquierda = True
+            
+            elif evento.type == pygame.KEYUP:
+                if evento.key == pygame.K_RIGHT:
+                    self.nave.movimiento_derecha = False
+                if evento.key == pygame.K_LEFT:
+                    self.nave.movimiento_izquierda = False
+
+
     def _actualizar_imagen(self):
         """Método para actualizar la imagen en pantalla"""
         self.screen.fill(self.color_fondo) #Crea la imagen de la pantalla
