@@ -16,13 +16,15 @@ class Nave:
         self.movimiento_derecha = False
         self.movimiento_izquierda = False
 
+        self.x = float(self.rect.x)
+
     def actualizar_nave(self):
         """Actualiza la posición de la nave según las banderas de movimiento"""
         if self.movimiento_derecha and self.rect.right < self.screen_rect.right:
-            self.rect.x += self.ajustes.velocidad_nave
+            self.x += self.ajustes.velocidad_nave
         if self.movimiento_izquierda and self.rect.left > 0:
-            self.rect.x -= self.ajustes.velocidad_nave
-
+            self.x -= self.ajustes.velocidad_nave
+        self.rect.x = self.x
     def dibu_nave(self):
         """Dibuja la nave en su posición actual"""
         self.screen.blit(self.image, self.rect)
